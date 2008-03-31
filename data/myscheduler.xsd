@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+        targetNamespace="http://cs.sfsu.edu/csc867/myscheduler" 
+        xmlns:myscheduler="http://cs.sfsu.edu/csc867/myscheduler"
+        elementFormDefault="qualified">
+
+    <xsd:complexType name="UserType">
+        <xsd:sequence>
+            <xsd:element name="firstName" type="xsd:string" maxOccurs="1" nillable="false" />
+            <xsd:element name="lastName" type="xsd:string" maxOccurs="1" nillable="false" />
+            <xsd:element name="email" type="xsd:string" maxOccurs="1" nillable="true"/>
+        </xsd:sequence>
+        <xsd:attribute name="id" type="xsd:string" use="required"/>
+    </xsd:complexType>
+    
+    <xsd:complexType name="PatientType">
+        <xsd:complexContent>
+            <xsd:extension base="myscheduler:UserType">
+                <xsd:attribute name="birthday" type="xsd:string" use="required"/>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="TimeSlotType">
+        <xsd:attribute name="date" type="xsd:date" use="required" />
+        <xsd:attribute name="time" type="xsd:time" use="required" />
+        <xsd:attribute name="duration" type="xsd:positiveInteger" use="required" />
+    </xsd:complexType>
+
+    <xsd:complexType name="EventType">
+        <xsd:sequence>
+            <xsd:element name="timeSlot" type="myscheduler:TimeSlotType"></xsd:element>
+            <xsd:element name="notes" type="xsd:string" maxOccurs="1" />
+        </xsd:sequence>
+        <xsd:attribute name="userId" type="xsd:string" use="required" />
+        <xsd:attribute name="happened" type="xsd:boolean" use="required" />
+    </xsd:complexType>
+    
+    <xsd:complexType name="CalendarType">
+        <xsd:sequence>
+            <xsd:element name="event" type="myscheduler:EventType" minOccurs="1" maxOccurs="unbounded" />
+        </xsd:sequence>
+        <xsd:attribute name="id" type="xsd:string" use="required" />
+        <xsd:attribute name="ownerId" type="xsd:string" use="required"/>
+    </xsd:complexType>
+    
+    <xsd:complexType name="MySchedulerType">
+        <xsd:sequence>
+            <xsd:element name="calendar" type="myscheduler:CalendarType" minOccurs="1" maxOccurs="unbounded" 
+                        nillable="false" />
+        </xsd:sequence>
+    </xsd:complexType>
+    
+    <xsd:complexType name="PatientsListType">
+        <xsd:sequence>
+            <xsd:element name="patient" type="myscheduler:PatientType" minOccurs="1" maxOccurs="unbounded" 
+                        nillable="false" />
+        </xsd:sequence>
+    </xsd:complexType>
+    
+    <xsd:complexType name="DoctorsListType">
+        <xsd:sequence>
+            <xsd:element name="user" type="myscheduler:UserType" minOccurs="1" maxOccurs="unbounded" 
+                        nillable="false" />
+        </xsd:sequence>
+    </xsd:complexType>
+    
+    <xsd:element name="myscheduler" type="myscheduler:MySchedulerType" />
+    <xsd:element name="patients" type="myscheduler:PatientsListType" />
+    <xsd:element name="doctors" type="myscheduler:DoctorsListType" />
+</xsd:schema>

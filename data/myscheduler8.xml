@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<myscheduler:myscheduler xmlns:myscheduler="http://cs.sfsu.edu/csc867/myscheduler" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://cs.sfsu.edu/csc867/myscheduler myscheduler.xsd ">
+  <myscheduler:calendar id="" ownerId="">
+    <myscheduler:event happened="true" userId="">
+      <myscheduler:timeSlot date="2001-01-01" duration="1" time="12:00:00"/>
+      <myscheduler:notes>myscheduler:notes</myscheduler:notes>
+    </myscheduler:event>
+  </myscheduler:calendar>
+</myscheduler:myscheduler>
