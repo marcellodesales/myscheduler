@@ -22,7 +22,7 @@ class IdentifiableObject(object):
     def getCreationDateTime(self):
         return self.__creationDateTime
     
-    def getHumanReadableDateTime(self):
+    def getHumanReadableCreationdateTime(self):
         return self.getCreationDateTime().strftime("Object created on %A, %B %d %Y at %H:%M")
     
 if __name__ == '__main__':

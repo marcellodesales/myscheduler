@@ -18,7 +18,7 @@ class User(IdentifiableObject):
     
     def printAll(self):
         print "[" +  str(self.getId()) + "]: " + self.getLastName() + ", " + self.getFirstName() + " (" + self.getEmail() + ")"
-        print "Created on " + self.getHumanReadableDateTime()
+        print "Created on " + self.getHumanReadableCreationdateTime()
         
     def getFirstName(self):
         return self.__firstName
