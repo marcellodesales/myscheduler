@@ -9,7 +9,7 @@ class Patient(User):
     def __new__(cls, firstName, lastName, email, birthday):
         "Constructs a new Patient with the all the information from a User, plus the birthday date"
         
-        if (type(birthday) != date):
+        if (not isinstance(birthday, date)):
             birthType = type(birthday)
             raise MySchedulerException("Birthday attribute of Patient must be an instance of Date", 
                                        {"birthday": birthType})

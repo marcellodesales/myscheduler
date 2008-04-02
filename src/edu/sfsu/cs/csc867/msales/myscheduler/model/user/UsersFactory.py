@@ -18,6 +18,8 @@ if __name__ == '__main__':
     marcello.printAll()
     marcelloClone = UsersFactory().buildNewPatient("Marcello", "de Sales", "msales@sfsu.edu", date(1979, 12, 15))
     
+    leandro = UsersFactory().buildNewPatient("Leandro", "de Sales", "leandro@sfsu.edu", date(1981, 12, 8))
+    
     marcello.printAll()
     marcelloClone.printAll()
     print marcello == marcelloClone

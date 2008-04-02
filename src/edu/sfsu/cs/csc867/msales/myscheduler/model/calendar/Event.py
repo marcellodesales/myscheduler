@@ -27,6 +27,7 @@ class Event(IdentifiableObject):
         return super(Event, cls).__new__(cls)
     
     def __init__(self, user, timeSlot, notes, happened):
+        IdentifiableObject.__init__(self)
         self.__user = user
         self.__timeSlot = timeSlot
         self.__notes = notes
@@ -57,12 +58,13 @@ class Event(IdentifiableObject):
     def __ne__(self, o):
         return not self == o
     
-    def __hash__(self):
-        return self.getTimeSlot().__hash__()
-    
     def printAll(self):
-        print "######### " + self.getTimeSlot().getFullHumanReadable() + " #############"
+        print "######### " + self.getId() + ": " + self.getTimeSlot().getFullHumanReadable() + " #############"
         self.getUser().printAll()
         print "Notes: " + self.getNotes()
         print "Has Happened? " + str(self.hasHappened())
         print "########################################################################"
+
+    def __hash__(self):
+        return self.getTimeSlot().__hash__()
+

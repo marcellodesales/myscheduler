@@ -5,15 +5,17 @@ from time import strptime
 class IdentifiableObject(object):
     
     def __new__(cls):
-        cls.__creationDateTime = datetime.today()
+        return super(IdentifiableObject, cls).__new__(cls)
+    
+    def __init__(self):
         now = long(time.time() * 1000)
         lasttime = now
         while lasttime == now: 
             time.sleep(.01)
             now = long(time.time() * 1000)
-        cls.__id = now
-        return super(IdentifiableObject, cls).__new__(cls)
-    
+        self.__id = str(now)
+        self.__creationDateTime = datetime.today()
+
     def getId(self):
         return self.__id
     

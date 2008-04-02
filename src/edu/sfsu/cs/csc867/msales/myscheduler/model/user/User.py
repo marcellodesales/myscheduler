@@ -11,6 +11,7 @@ class User(IdentifiableObject):
         return super(User, cls).__new__(cls)
     
     def __init__(self, firstName, lastName, email):
+        IdentifiableObject.__init__(self)
         self.__firstName = firstName
         self.__lastName = lastName
         self.__email = email

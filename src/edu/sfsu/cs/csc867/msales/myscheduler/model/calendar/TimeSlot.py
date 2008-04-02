@@ -127,8 +127,6 @@ if __name__ == '__main__':
     s = "2005-12-06 12:13:14"
     f = "%Y-%m-%d %H:%M:%S"
     
-    
-    
     stotA.getFullHumanReadable()
     
 #    >>> s = "2005-12-06T12:13:14"

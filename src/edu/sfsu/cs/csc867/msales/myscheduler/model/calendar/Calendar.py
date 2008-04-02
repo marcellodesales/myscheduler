@@ -10,24 +10,41 @@ class Calendar(IdentifiableObject):
     """
     
     def __new__(cls, owner, eventList = []):
-        cls.__owner = owner
-        cls.__eventList = set(eventList)
-        
         return super(Calendar, cls).__new__(cls)
 
     def __init__(self, owner, eventList):
+        IdentifiableObject.__init__(self)
         self.__owner = owner
         self.__eventList = set(eventList)
 
     def getOwner(self):
         return self.__owner
 
-    def getEventSet(self):
-        return self.__eventList
+    def getEventSet(self, date=-1):
+        if (date == -1):
+            return self.__eventList
+        else:
+            return self.__eventList
     
     def addEvent(self, event):
-        if (type(event) != Event):
-            raise MySchedulerException("Event must be an instance of Event class", {"event" : event})
+        if (not isinstance(event, Event)):
+            eT = type(event)
+            print eT
+            a = {"event" : eT}
+            raise MySchedulerException("Event must be an instance of Event class", a)
+        
+        startDate = event.getTimeSlot().getStartDateTime()
+        endDate = event.getTimeSlot().getEndDateTime()
+        for existingEvent in sorted(self.getEventSet(startDate.date)):
+            exStartDate = existingEvent.getTimeSlot().getStartDateTime()
+            exEndDate = existingEvent.getTimeSlot().getEndDateTime()
+            if (startDate  < exStartDate):
+                if (endDate >= exStartDate):
+                    raise MySchedulerException("New event conflicts with the start time of an existing one at " + str(exStartDate), {"event" : event})
+            if (startDate >= exStartDate and startDate <= exEndDate):
+                raise MySchedulerException("New event conflicts with the duration of an existing one at " + 
+                                           str(exStartDate), {"event" : event})
+            print str(existingEvent.getId()) + "New event doesn't conflict with event at " + str(exStartDate) + " " + str(exEndDate)
         self.__eventList.add(event)
     
     def containsStartDateTimeSet(self):
@@ -58,6 +75,6 @@ class Calendar(IdentifiableObject):
         print "Number of events: " + str(len(self.getEventSet()))
         self.getOwner().printAll()
         
-        for ev in self.getEventSet():
+        for ev in sorted(self.getEventSet()):
             ev.printAll()
             print "\n"
