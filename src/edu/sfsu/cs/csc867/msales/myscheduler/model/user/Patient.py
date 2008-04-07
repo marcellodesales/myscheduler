@@ -6,7 +6,7 @@ from datetime import date
 class Patient(User):
     "Patient is a User that has a birthday attribute."
     
-    def __new__(cls, firstName, lastName, email, birthday):
+    def __new__(cls, firstName, lastName, email, birthday, id=-1):
         "Constructs a new Patient with the all the information from a User, plus the birthday date"
         
         if (not isinstance(birthday, date)):
@@ -14,10 +14,10 @@ class Patient(User):
             raise MySchedulerException("Birthday attribute of Patient must be an instance of Date", 
                                        {"birthday": birthType})
         cls.__birthday = birthday
-        return super(Patient, cls).__new__(cls, firstName, lastName, email)
+        return super(Patient, cls).__new__(cls, firstName, lastName, email, id)
     
-    def __init__(self, firstName, lastName, email, birthday):
-        User.__init__(self, firstName, lastName, email)
+    def __init__(self, firstName, lastName, email, birthday, id=-1):
+        User.__init__(self, firstName, lastName, email, id)
         self.__birthday = birthday
         
     def getBirthDay(self):

@@ -1,21 +1,18 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<myscheduler:patients xmlns:myscheduler="http://cs.sfsu.edu/csc867/myscheduler" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://cs.sfsu.edu/csc867/myscheduler myscheduler.xsd ">
-  <myscheduler:patient birthday="" id="">
-    <myscheduler:firstName>myscheduler:firstName</myscheduler:firstName>
-    <myscheduler:lastName>myscheduler:lastName</myscheduler:lastName>
-    <myscheduler:email>myscheduler:email</myscheduler:email>
-  </myscheduler:patient>
-
-  <myscheduler:patient birthday="" id="2">
-    <myscheduler:firstName>myscheduler:firstName</myscheduler:firstName>
-    <myscheduler:lastName>myscheduler:lastName</myscheduler:lastName>
-    <myscheduler:email>myscheduler:email</myscheduler:email>
-  </myscheduler:patient>
-
-  <myscheduler:patient birthday="" id="2">
-    <myscheduler:firstName>myscheduler:firstName</myscheduler:firstName>
-    <myscheduler:lastName>myscheduler:lastName</myscheduler:lastName>
-    <myscheduler:email>myscheduler:email</myscheduler:email>
-  </myscheduler:patient>
-
+<?xml version='1.0' encoding='UTF-8'?>
+<myscheduler:patients xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xmlns:myscheduler='http://cs.sfsu.edu/csc867/myscheduler' xsi:schemaLocation='http://cs.sfsu.edu/csc867/myscheduler myscheduler.xsd '>
+  <myscheduler:user username='msales' password='utn29oad' id='1207535492344'>
+    <myscheduler:firstName>Marcello</myscheduler:firstName>
+    <myscheduler:lastName>Sales</myscheduler:lastName>
+    <myscheduler:email>msales@sfsu.edu</myscheduler:email>
+  </myscheduler:user>
+  <myscheduler:user username='msales' password='1234' id='1207537676153'>
+    <myscheduler:firstName>Marcello</myscheduler:firstName>
+    <myscheduler:lastName>de Sales</myscheduler:lastName>
+    <myscheduler:email>msales@sfsu.edu</myscheduler:email>
+  </myscheduler:user>
+  <myscheduler:user username='marcellosales' password='utn29oad' id='1207547544729'>
+    <myscheduler:firstName>Marcello</myscheduler:firstName>
+    <myscheduler:lastName>de Sales</myscheduler:lastName>
+    <myscheduler:email>marcello.sales@gmail.com</myscheduler:email>
+  </myscheduler:user>
 </myscheduler:patients>

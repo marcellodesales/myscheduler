@@ -11,12 +11,15 @@
             <xsd:element name="email" type="xsd:string" maxOccurs="1" nillable="true"/>
         </xsd:sequence>
         <xsd:attribute name="id" type="xsd:string" use="required"/>
+        <xsd:attribute name="username" type="xsd:string" use="required"/>
+        <xsd:attribute name="password" type="xsd:string" use="required"/>
+
     </xsd:complexType>
     
     <xsd:complexType name="PatientType">
         <xsd:complexContent>
             <xsd:extension base="myscheduler:UserType">
-                <xsd:attribute name="birthday" type="xsd:string" use="required"/>
+                <xsd:attribute name="birthday" type="xsd:date" use="required"/>
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
@@ -51,21 +54,14 @@
         </xsd:sequence>
     </xsd:complexType>
     
-    <xsd:complexType name="PatientsListType">
-        <xsd:sequence>
-            <xsd:element name="patient" type="myscheduler:PatientType" minOccurs="1" maxOccurs="unbounded" 
-                        nillable="false" />
-        </xsd:sequence>
-    </xsd:complexType>
-    
-    <xsd:complexType name="DoctorsListType">
+    <xsd:complexType name="UsersListType">
         <xsd:sequence>
             <xsd:element name="user" type="myscheduler:UserType" minOccurs="1" maxOccurs="unbounded" 
                         nillable="false" />
         </xsd:sequence>
     </xsd:complexType>
-    
+
     <xsd:element name="myscheduler" type="myscheduler:MySchedulerType" />
-    <xsd:element name="patients" type="myscheduler:PatientsListType" />
-    <xsd:element name="doctors" type="myscheduler:DoctorsListType" />
+    <xsd:element name="patients" type="myscheduler:UsersListType" />
+    <xsd:element name="doctors" type="myscheduler:UsersListType" />
 </xsd:schema>
