@@ -9,11 +9,11 @@ class Calendar(IdentifiableObject):
     a set of different events
     """
     
-    def __new__(cls, owner, eventList = []):
-        return super(Calendar, cls).__new__(cls)
+    def __new__(cls, owner, eventList = [], id=-1):
+        return super(Calendar, cls).__new__(cls, id)
 
-    def __init__(self, owner, eventList):
-        IdentifiableObject.__init__(self)
+    def __init__(self, owner, eventList, id=-1):
+        IdentifiableObject.__init__(self, id)
         self.__owner = owner
         self.__eventList = set(eventList)
 
@@ -40,9 +40,9 @@ class Calendar(IdentifiableObject):
             exEndDate = existingEvent.getTimeSlot().getEndDateTime()
             if (startDate  < exStartDate):
                 if (endDate >= exStartDate):
-                    raise MySchedulerException("New event conflicts with the start time of an existing one at " + str(exStartDate), {"event" : event})
+                    raise EventConflictsException("New event conflicts with the start time of an existing one at " + str(exStartDate), {"event" : event})
             if (startDate >= exStartDate and startDate <= exEndDate):
-                raise MySchedulerException("New event conflicts with the duration of an existing one at " + 
+                raise EventConflictsException("New event conflicts with the duration of an existing one at " + 
                                            str(exStartDate), {"event" : event})
             print str(existingEvent.getId()) + "New event doesn't conflict with event at " + str(exStartDate) + " " + str(exEndDate)
         self.__eventList.add(event)
