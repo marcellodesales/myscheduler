@@ -11,6 +11,7 @@ class TimeSlot(object):
     DURATION_HOUR = "h"
     DURATION_MINUTE = "m"
     DURATION_DAY = "d"
+    DEFAULT_DATETIME_FORMAT = "%Y-%m-%d %H:%M:%S"
     
     def __new__(cls, dateTime="null",  duration=(1,"h")):
         """
@@ -37,6 +38,9 @@ class TimeSlot(object):
     def getDate(self):
         return self.__dateTime.date()
 
+    def getTime(self):
+        return self.__dateTime.time()
+    
     def getStartDateTime(self):
         return self.__dateTime
 
@@ -96,8 +100,7 @@ class TimeSlot(object):
             
         else:
             return false
-        
-    
+
     def __eq__(self, o):
         if isinstance(o, self.__class__):
             selfStartDateTime = self.getStartDateTime()
@@ -121,18 +124,21 @@ class TimeSlot(object):
 
     def __hash__(self):
         return self.getStartDateTime().__hash__() + self.getEndDateTime().__hash__()
+    
+    def toXML(self):
+        namespace = "myscheduler:"
+        duration = str(self.getDurationTuple()[0]) + str(self.getDurationTuple()[1])
+        return  "<" + namespace + "timeSlot date=\"" + str(self.getDate()) + "\" time=\"" + str(self.getTime()) \
+                   + "\" duration=\"" + duration + "\"/>"
 
 if __name__ == '__main__':
     
     s = "2005-12-06 12:13:14"
     f = "%Y-%m-%d %H:%M:%S"
     
-    stotA.getFullHumanReadable()
-    
-#    >>> s = "2005-12-06T12:13:14"
-#    >>> from datetime import datetime
-#    from time import strptime
-#    >>> datetime(*strptime(s, "%Y-%m-%dT%H:%M:%S")[0:6])
+    from datetime import datetime
+    from time import strptime
+    print datetime(*strptime(s, f)[0:6])
 #    from datetime import date
 #    now = datetime.today()
 #    print now.strftime("%m-%d-%Y. %b %d, %Y is a %A on the %d day of %B.")

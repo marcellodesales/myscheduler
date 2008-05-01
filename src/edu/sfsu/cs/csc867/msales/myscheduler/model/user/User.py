@@ -48,9 +48,9 @@ class User(IdentifiableObject):
     
     def __hash__(self):
         return self.getEmail().__hash__()
-    
-    
+
     def toXML(self):
+        #the namespace is necessary to be parsed, so when saving remove the attribute
         namespace = "myscheduler:"
         return  "<" + namespace + "user id=\"" + self.getId() + "\" username=\"" + self.getUsername() \
                    + "\" password=\"" + self.getPassword() + "\" xmlns:myscheduler=\"http://cs.sfsu.edu/csc867/myscheduler\">" \

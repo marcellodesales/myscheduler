@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<myscheduler:calendars
+	xmlns:myscheduler="http://cs.sfsu.edu/csc867/myscheduler"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://cs.sfsu.edu/csc867/myscheduler myscheduler.xsd ">
+	<myscheduler:calendar id="1208309768316" ownerId="1208309768264">
+		<myscheduler:event id="1208309765755" happened="false" userId="1207537676153">
+			<myscheduler:timeSlot date="2005-12-06" time="12:13:00" duration="1h" />
+			<myscheduler:location zipCode="94132">
+				81 Woodrow St
+			</myscheduler:location>
+			<myscheduler:notes>
+				We have to meet at that date...
+			</myscheduler:notes>
+		</myscheduler:event>
+		<myscheduler:event id="1208309765722"  happened="true" userId="1208309768264">
+			<myscheduler:timeSlot date="2005-12-06" time="13:14:00" duration="2h" />
+			<myscheduler:location zipCode="94132"></myscheduler:location>
+			<myscheduler:notes>
+				To review the options...
+			</myscheduler:notes>
+		</myscheduler:event>
+		<myscheduler:event id="1208309765744"  happened="false" userId="1207537676153">
+			<myscheduler:timeSlot date="2005-12-06" time="17:10:00"
+				duration="5h" />
+			<myscheduler:location zipCode="94132"></myscheduler:location>
+			<myscheduler:notes>
+				A new different topic...
+			</myscheduler:notes>
+		</myscheduler:event>
+	</myscheduler:calendar>
+
+</myscheduler:calendars>
+

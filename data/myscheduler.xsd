@@ -27,14 +27,24 @@
     <xsd:complexType name="TimeSlotType">
         <xsd:attribute name="date" type="xsd:date" use="required" />
         <xsd:attribute name="time" type="xsd:time" use="required" />
-        <xsd:attribute name="duration" type="xsd:positiveInteger" use="required" />
+        <xsd:attribute name="duration" type="xsd:string" use="required" />
+    </xsd:complexType>
+    
+    <xsd:complexType name="EventLocationType">
+        <xsd:simpleContent>
+	        <xsd:extension base="xsd:string">
+	          <xsd:attribute name="zipCode" type="xsd:string" use="required"/>
+	        </xsd:extension>
+      </xsd:simpleContent> 
     </xsd:complexType>
 
     <xsd:complexType name="EventType">
         <xsd:sequence>
-            <xsd:element name="timeSlot" type="myscheduler:TimeSlotType"></xsd:element>
+            <xsd:element name="timeSlot" type="myscheduler:TimeSlotType" />
+            <xsd:element name="location" type="myscheduler:EventLocationType" />
             <xsd:element name="notes" type="xsd:string" maxOccurs="1" />
         </xsd:sequence>
+        <xsd:attribute name="id" type="xsd:string" use="required" />
         <xsd:attribute name="userId" type="xsd:string" use="required" />
         <xsd:attribute name="happened" type="xsd:boolean" use="required" />
     </xsd:complexType>
@@ -61,7 +71,6 @@
         </xsd:sequence>
     </xsd:complexType>
 
-    <xsd:element name="myscheduler" type="myscheduler:MySchedulerType" />
-    <xsd:element name="patients" type="myscheduler:UsersListType" />
-    <xsd:element name="doctors" type="myscheduler:UsersListType" />
+    <xsd:element name="calendars" type="myscheduler:MySchedulerType" />
+    <xsd:element name="users" type="myscheduler:UsersListType" />
 </xsd:schema>

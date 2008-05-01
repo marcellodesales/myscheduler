@@ -12,4 +12,4 @@ class UserPasswordNotMatchException(MySchedulerException):
         self.__varsValueDic = varsValueDic 
 
 if __name__ == '__main__':
-    print UserPasswordNotMatchException("message").getId()
+    print UserPasswordNotMatchException("message").getMessage()

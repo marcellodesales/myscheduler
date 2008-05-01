@@ -78,3 +78,16 @@ class Calendar(IdentifiableObject):
         for ev in sorted(self.getEventSet()):
             ev.printAll()
             print "\n"
+    
+    def toXML(self):
+        namespace = "myscheduler:"
+        mainTag = "calendar"
+        
+        events = ""
+        for ev in sorted(self.getEventSet()):
+            events += ev.toXML()
+
+        return  "<" + namespace + mainTag + " id=\"" + self.getId() + "\" ownerId=\"" + self.getOwner().getId() + "\" " \
+                    + "xmlns:myscheduler=\"http://cs.sfsu.edu/csc867/myscheduler\">" \
+                    + events + \
+                "</" + namespace + mainTag + ">"

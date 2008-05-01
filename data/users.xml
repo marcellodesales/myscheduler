@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<myscheduler:users xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xmlns:myscheduler='http://cs.sfsu.edu/csc867/myscheduler' xsi:schemaLocation='http://cs.sfsu.edu/csc867/myscheduler myscheduler.xsd '>
+  <myscheduler:user username='msales' password='utn29oad' id='1207535492344'>
+    <myscheduler:firstName>Marcello</myscheduler:firstName>
+    <myscheduler:lastName>Sales</myscheduler:lastName>
+    <myscheduler:email>msales@sfsu.edu</myscheduler:email>
+  </myscheduler:user>
+  <myscheduler:user username='leo' password='1234' id='1207537676153'>
+    <myscheduler:firstName>Leandro</myscheduler:firstName>
+    <myscheduler:lastName>de Sales</myscheduler:lastName>
+    <myscheduler:email>leoandroal@gmail.com</myscheduler:email>
+  </myscheduler:user>
+  <myscheduler:user username='thiago' password='utn29oad' id='1208309768264'>
+    <myscheduler:firstName>Thiago</myscheduler:firstName>
+    <myscheduler:lastName>de Sales</myscheduler:lastName>
+    <myscheduler:email>thiagosales@gmail.com</myscheduler:email>
+  </myscheduler:user>
+</myscheduler:users>

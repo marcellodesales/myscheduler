@@ -1,0 +1,179 @@
+[[.import name=cookie ]]
+[[.import name=session ]]
+[[.import name=redirect ]]
+
+[[!
+from edu.sfsu.cs.csc867.msales.myscheduler.controller import UserController
+
+def getCalendar(self):
+    c = CalendarFactory().buildNewCalendar(self.logged_name)
+    return c
+
+def createEvent(self, api):
+    redirect.externalRefresh('newevent.spy')
+
+
+def logout(self, api):
+    # Logout
+    print 'Logging out ... '
+    ck = cookie.get('CookieName')
+    if ck:
+        cookie.delete('CookieName')
+
+    session['Logged'] = ''
+    # Clear the last event session info.
+    session['LastEvent'] = ''
+
+    redirect.externalRefresh('index.spy')
+
+
+def checkerrors(self, api, Login, Password, Remember=None):
+    from spyceException import HandlerError, CompoundHandlerError
+    cve = CompoundHandlerError()
+    
+    if not Login:
+        cve.add(HandlerError('Login', 'Your login is empty'))
+    else:
+        if len(Login) < 5:
+            cve.add(HandlerError('Login', 'Your login is too short (minimum: 5)'))
+
+    if not Password:
+        cve.add(HandlerError('Password', 'Your password is empty'))
+
+    if cve:
+        raise cve
+
+
+    from edu.sfsu.cs.csc867.msales.myscheduler.controller.UserController import UserController
+    from edu.sfsu.cs.csc867.msales.myscheduler.data.UserAlreadyExistsException import UserAlreadyExistsException 
+    from edu.sfsu.cs.csc867.msales.myscheduler.data.UserPasswordNotMatchException import UserPasswordNotMatchException
+    from edu.sfsu.cs.csc867.msales.myscheduler.data.UserNotFoundException import UserNotFoundException
+
+    user = None
+    try:
+        user = UserController().doLogin(Login, Password)
+    except UserPasswordNotMatchException, upnme:
+        cve.add(HandlerError('Login failed', upnme.getMessage()))
+    except UserNotFoundException, unfe:
+        cve.add(HandlerError('Login failed', unfe.getMessage()))
+   
+
+    if cve:
+        raise cve
+
+    if Remember:
+        cookie.set('CookieName', Login)
+    
+    session['Logged'] = Login
+
+
+    redirect.externalRefresh('index.spy')
+
+
+]]
+
+
+[[\
+c = cookie.get('CookieName')
+
+try:
+    s = session['Logged']
+except:
+    s = ''
+
+if c or s:
+    hasCookieLogin = "'display: none;'"
+    hasCookieLogged = "'display: block;'"
+    self.logged_name = c or s
+else:
+    hasCookieLogin = "'display: block;'"
+    hasCookieLogged = "'display: none;'"
+    self.logged_name = ''
+]]
+
+
+<style type="text/css"> @import url(extra.css); </style>
+
+<spy:parent title="Login Page" />
+	<div id='holder' class='SampleBox' style=[[=hasCookieLogin]]>
+	<f:form>
+		<f:text name="Login" label="Login" default='' />
+		<br/>
+		<br/>
+		<f:password name="Password" label="Password" value=''  />
+		<br/>
+		<f:checkbox id="Remember" default="Remember" name="Remember" label="Remember me" value='Remember' />
+		<br/>
+		<br/>
+		<a href="register.spy"> Register</a>
+		<f:submit handler="self.checkerrors" value="Sign in" />
+	</f:form>
+	</div>
+
+	<br/>
+	<!-- Displayed if user is logged in -->
+	<div id='logged' class='SampleBox' style=[[=hasCookieLogged]]>
+        	<f:form>
+			<p> You are logged in as [[= hasattr(self, 'logged_name') and self.logged_name or 'UnexpectedError' ]],
+				<f:submit handler="self.logout" value="Logout" />
+			</p>
+			<br/>
+			<f:submit handler='self.createEvent' value='Create new event' />
+		</f:form>
+	</div>
+	<br/>
+	<!-- Displayed if user is logged in -->
+	<div id='calendar' class='SampleBox' style=[[=hasCookieLogged]]>
+		<h2>Calendar</h2>
+		<hr>
+		<!-- Calendar here, the user login is stored in session['Logged'] -->
+                <!-- Sample: -->
+[[\
+if self.logged_name:
+
+    # y = self.getCalendar() 
+    y = ''
+
+    if y:
+        eventlist = y.getEventSet()
+
+        if eventlist:
+            for e in eventlist:
+                print "<div id='sampleEvent' class='Event' style=" + hasCookieLogged + "><br/><span style='font-weight: bold; font-size: 18px;'>Event Date: </span>" + str(e.getTimeSlot().getDate())
+
+                print "<br/><span style='font-weight: bold; font-size: 18px;'>Start Date: </span>" + str(e.getTimeSlot().getStartDateTime())
+
+                print "<br/><span style='font-weight: bold; font-size: 18px;'>End Date: </span>" + str(e.getTimeSlot().getEndDateTime())
+
+                print "<br/><span style='font-weight: bold; font-size: 18px;'>HReadableShort: </span>" + str(e.getTimeSlot().getShortHumanReadable())
+
+                print "<br/><span style='font-weight: bold; font-size: 18px;'>HReadableFull: </span>" + str(e.getTimeSlot().getFullHumanReadable())
+
+                print "<br/><span style='font-weight: bold; font-size: 18px;'>Duration: </span>" + e.getTimeSlot().getDurationString()
+
+                hap = str(e.hasHappened())
+                if hap:
+                    hap = 'yes'
+                else:
+                    hap = 'no'
+
+                print "<br/><span style='font-weight: bold; font-size: 18px;'>Has happened: </span>" + hap
+
+                print "<br/><span style='font-weight: bold; font-size: 18px;'>Notes: </span>" + e.getNotes()
+
+                print '</div>'
+    
+        else:
+            print "<br/><p>You do not have any events</p></br>"
+
+    else:
+        print "<br/><p>Your calendar is empty</p></br>"
+
+else:
+    print "<br/><p>You are not logged in!</p></br>"
+
+]]
+		
+		</div>
+	</div>
+

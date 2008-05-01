@@ -44,6 +44,9 @@ def xmlFileToDictionary(file):
     t = ET.parse(f).getroot()
     return ObjectDictionary({__getTagWithoutNamespace(t.tag) : __parse_node(t)})
 
+def xmlElementToDictionary(xmlElement):
+    return ObjectDictionary({__getTagWithoutNamespace(xmlElement.tag) : __parse_node(xmlElement)})
+
 class XMLToDic(Singleton):
     
     def getDictionaryFromXMLFile(self, file):
@@ -51,6 +54,9 @@ class XMLToDic(Singleton):
 
     def getDictionaryFromXMLString(self, string):
         return xmlStringToDictionary(string)
+    
+    def getDictionaryFromXMLElement(self, xmlElement):
+        return xmlElementToDictionary(xmlElement)
     
 if __name__ == '__main__':
 

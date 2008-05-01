@@ -5,9 +5,25 @@ from edu.sfsu.cs.csc867.msales.myscheduler.data.XMLPersistence import XMLPersist
 class UserController(Singleton):
 
     def createNewUser(self, firstName, lastName, email, username, password):
+        """
+        Creates a new user in the system
+        @param firstName: user's first name
+        @param lastName: user's last name
+        @param email: user's email address
+        @param username: the username used to login. It's an alpha-character
+        @param password: the password matching the login provided
+        @raise UserPasswordNotMatchException: if the given password doesn't match the user found
+        @raise UserNotFoundException: if the given username could not be found on the system
+        """
         newUser = UsersFactory().buildNewUser(firstName, lastName, email, username, password)
-        XMLPersistence().saveUser(newUser)
+        if (XMLPersistence().userExists(newUser)):
+            raise UserAlreadyExistsException("User already exists with the given email!", {'email':user.getEmail()} )
+        else:
+            XMLPersistence().saveUser(newUser)
         return newUser
+    
+    def getUser(self, userId):
+        return XMLPersistence().getUser(userId)
     
     def doLogin(self, username, password):
         """
@@ -21,8 +37,10 @@ class UserController(Singleton):
 
 if __name__ == '__main__':
     
-    marcelloCon = UserController().createNewUser("Marcello", "de Sales", "marcello.sales@gmail.com", "marcellosales", "utn29oad")
-    marcelloCon.printAll()
+    marcello = UserController().getUser('1207535492344')
+    marcello.printAll()
+
+    
     
     #marcelloLogged = UserController().doLogin("msales", "utn29oad")
     #marcelloLogged.printAll()

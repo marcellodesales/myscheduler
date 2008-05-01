@@ -1,0 +1,213 @@
+[[.import name=session]]
+[[.import name=cookie]]
+[[.import name=redirect]]
+
+
+[[\
+
+c = cookie.get('CookieName')
+
+# Session['Logged'] 
+
+try:
+    s = session['Logged']
+except:
+    s = ''
+
+if c or s:
+    hasCookieLogin = "'display: none;'"
+    hasCookieLogged = "'display: block;'"
+    self.logged_name = c or s
+else:
+    hasCookieLogin = "'display: block;'"
+    hasCookieLogged = "'display: none;'"
+    self.logged_name = ''
+]]
+
+
+[[!
+#from edu.sfsu.cs.csc867.msales.myscheduler.model.calendar import CalendarFactory
+
+ERROR_FORMAT = 'Event time format is incorrect. Please use HH:MM'
+ERROR_NUM = 'Event time is invalid. Hours range from 0 to 23 and minutes from 0 to 59'
+
+ERROR_DURATION = "Event duration should be entered like 'Nd', 'Nh' or 'Nm', where N is a number and d, h or m denote respectivelly days, hours and months"
+ERROR_DURATION += ". For example, if your event duration is 5 days, then you may type '5d' on the field"
+
+
+def goback(self, api):
+    redirect.externalRefresh('index.spy')
+     
+
+def logout(self, api):
+    # Logout
+    print 'Logging out ... '
+    ck = cookie.get('CookieName')
+    if ck:
+        cookie.delete('CookieName')
+
+    session['Logged'] = ''
+    # Clear the last event session info.
+    session['LastEvent'] = ''
+
+    redirect.externalRefresh('index.spy')
+
+
+def checkandsubmit(self, api, Date, Time, Duration, Address, Zipcode, Notes):
+    self.checkerrors(api, Date, Time, Duration, Address, Zipcode, Notes)
+
+    d = self.getDurationFormatted(Duration)
+    
+
+    # Descomentar quando estiver pronto o factory
+    #CalendarFactory.buildNewEvent(self.logged_name, Date, "%d/%m/%y", d[0], d[1], Notes)
+    
+    redirect.externalRefresh('index.spy')
+
+
+def checkerrors(self, api, Date, Time, Duration, Address, Zipcode, Notes):
+    from spyceException import HandlerError, CompoundHandlerError
+    cve = CompoundHandlerError()
+
+    session['validation'] = False
+
+    if not Date:
+        cve.add(HandlerError('Date', 'Event date is empty'))
+
+    if not Time:
+        cve.add(HandlerError('Time', 'Event time is empty'))
+
+    else:
+        timeErr = self.checkTime(Time)
+        if timeErr:
+             cve.add(HandlerError('Time', timeErr))
+
+    if not Duration:
+        cve.add(HandlerError('Duration', 'Event duration is empty'))
+    else:
+        duration = self.getDurationFormatted(Duration)
+        if not duration:
+            cve.add(HandlerError('Duration', self.ERROR_DURATION))
+
+    if not Address:
+        cve.add(HandlerError('Address', 'Event address is empty'))
+
+    if not Zipcode:
+        cve.add(HandlerError('Zipcode', 'Event zipcode is empty'))
+
+    if cve:
+        raise cve
+
+    session['validation'] = True
+    return True
+
+
+def checkTime(self, time):
+    try:
+        t = time.split(':')
+    except:
+        return self.ERROR_FORMAT
+
+    if len(t) != 2: 
+        return self.ERROR_FORMAT
+    
+    a,b = (0, 0)
+
+    try:
+        a = int(t[0])
+        b = int(t[1])
+    except:
+        return self.ERROR_NUM
+  
+    if a in range(24) and b in range(60):
+        return None
+    else:
+        return self.ERROR_NUM          
+        
+    
+def getDurationFormatted(self, d):
+    v = ['d', 'h', 'm']
+
+    for i in v:
+        if i in d:
+            durationNumber = d.split(i)[0]
+            if int(durationNumber) < 0:
+                return None
+            format = i
+            return (int(durationNumber), format)
+    return None
+
+]]
+
+[[\
+def stylevalidate():
+    try:
+       if session['validation']:
+          session['validation'] = False
+          return "'display: block;'"
+    except:
+       pass
+    return "'display: none;'"
+]]
+	
+<style type="text/css"> @import url(extra.css); </style>
+<spy:parent title="Create new event" />
+
+<div id='logged' class='SampleBox' style=[[=hasCookieLogged]]>
+     	<f:form>
+	<p> You are logged in as [[= hasattr(self, 'logged_name') and self.logged_name or 'UnexpectedError' ]],
+		<f:submit handler="self.logout" value="Logout" />
+		</p>
+	</f:form>
+</div>
+
+<br/>
+
+
+<div id='holder' class='SampleBox' style="width: 40%;">
+<div id='test' class='validationerror' style=[[=stylevalidate()]]>
+<p><br/>All data valid, retype your password and submit it<br/></p>
+</div>
+
+<f:form>
+
+	<f:date name="Date" label="Date" default="" />
+	<br/>
+	<br/>
+	
+	<f:text name="Time" label="Time (HH:MM)" default="" />
+	<br/>
+	<br/>
+
+	<f:text name="Duration" label="Duration (e.g. type '5d' for 5 days)" default="" />
+	<br/>
+	<br/>
+
+	<f:text name="Address" label="Event address" default='' />
+	<br/>
+	<br/>
+
+
+	<f:text name="Zipcode" label="Event Zipcode" default='' />
+	<br/>
+	<br/>
+
+
+	<f:textarea name="Notes" label="Notes"  rows=5 cols=40 >
+	</f:textarea>
+	<br/>
+	<br/>
+
+
+
+	<f:submit label="Submit" handler="self.checkandsubmit" value="Register" />
+
+	<f:submit label="Check" handler="self.checkerrors" value="Check" />
+<br/>
+<br/>
+      <f:submit label="<< Main" handler="self.goback" value="<< Main" />
+
+</f:form>
+
+</div>
+

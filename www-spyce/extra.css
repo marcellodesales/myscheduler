@@ -1,0 +1,16 @@
+.SampleBox {
+	width: 30%;
+	text-align: right;
+	padding: 4px;
+	background-color: #EEEEEE;
+	font-color: #FFFFFF;
+	border: 1px solid #DDDDDD;
+}
+
+.Event {
+	text-align: right;
+	padding: 4px;
+	background-color: #EEEEEE;
+	font-color: #FFFFFF;
+	border: 1px solid #CCCCCC;
+}

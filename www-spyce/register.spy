@@ -1,0 +1,147 @@
+[[.import name=session]]
+[[.import name=redirect]]
+
+[[!
+
+from edu.sfsu.cs.csc867.msales.myscheduler.controller.UserController import UserController
+from edu.sfsu.cs.csc867.msales.myscheduler.model.calendar import CalendarFactory
+
+
+def checkandsubmit(self, api, FirstName, LastName, Login, Mail, RetypeMail, Password, RetypePassword, Address, ZipCode):
+    self.checkerrors(api, FirstName, LastName, Login, Mail, RetypeMail, Password, RetypePassword, Address, ZipCode)
+
+    from edu.sfsu.cs.csc867.msales.myscheduler.controller.UserController import UserController
+    # save data from here
+    x = UserController()
+    x.createNewUser(FirstName, LastName, Mail, Login, Password)
+
+    session['Logged'] = Login
+    redirect.externalRefresh('index.spy')
+
+def checkerrors(self, api, FirstName, LastName, Login, Mail, RetypeMail, Password, RetypePassword, Address, ZipCode):
+    from spyceException import HandlerError, CompoundHandlerError
+    cve = CompoundHandlerError()
+
+    session['validation'] = False
+
+    if not FirstName:
+        cve.add(HandlerError('First Name', 'Your first name is empty'))
+
+    if not LastName:
+        cve.add(HandlerError('Last Name', 'Your last name is empty'))
+
+    if not Login:
+        cve.add(HandlerError('Login', 'Your login is empty'))
+    else:
+        if len(Login) < 5:
+            cve.add(HandlerError('Login', 'Your login is too short (minimum: 5)'))
+
+    mailCheck = True
+    if not Mail:
+        cve.add(HandlerError('Email Address', 'Your email address is empty'))
+        mailCheck = False
+    elif '@' not in Mail:
+        cve.add(HandlerError('Email Address', 'Your email address is invalid (missing @)'))
+        mailCheck = False
+
+    if not RetypeMail:
+        cve.add(HandlerError('Retype Email Address', 'Your retype email address is empty'))
+        mailCheck = False
+    elif '@' not in RetypeMail:
+        cve.add(HandlerError('Retype Email Address', 'Your retype email address is invalid (missing @)'))
+        mailCheck = False
+
+    if mailCheck and Mail != RetypeMail:
+        cve.add(HandlerError('Email Address', "Your emails do not match"))
+
+    passCheck = True
+    if not Password:
+        cve.add(HandlerError('Password', 'Your password is empty'))
+        passCheck = False
+    elif len(Password) < 6:
+            cve.add(HandlerError('Password', 'Your password is too short (minimum: 6)'))
+            passCheck = False
+
+    if not RetypePassword:
+        cve.add(HandlerError('Retype Password', 'Your retype password is empty'))
+        passCheck = False
+
+    if passCheck and not Password == RetypePassword:
+        cve.add(HandlerError('Passwords', "Your passwords do not match"))
+
+    if not Address:
+        cve.add(HandlerError('Address', 'Your address is empty'))
+
+    if not ZipCode:
+        cve.add(HandlerError('Zip Code', 'Your zip code is empty'))
+
+    if cve:
+        raise cve
+
+    session['validation'] = True
+    return True
+
+]]
+
+[[\
+def stylevalidate():
+    try:
+       if session['validation']:
+          session['validation'] = False
+          return "'display: block;'"
+    except:
+       pass
+    return "'display: none;'"
+]]
+	
+<style type="text/css"> @import url(extra.css); </style>
+<spy:parent title="Register Page" />
+<div id='holder' class='SampleBox' style="width: 40%;">
+<div id='test' class='validationerror' style=[[=stylevalidate()]]>
+<p><br/>All data valid, retype your password and submit it<br/></p>
+</div>
+<f:form>
+	<f:text name="FirstName" label="First Name" default='' />
+	<br/>
+	<br/>
+
+	<f:text name="LastName" label="Last Name" default="" />
+	<br/>
+	<br/>
+
+	<f:text name="Login" label="Login" default="" />
+	<br/>
+	<br/>
+
+	<f:text name="Mail" label="Email Address" default="" />
+	<br/>
+	<br/>
+
+	<f:text name="RetypeMail" label="Retype Email Address" default="" />
+	<br/>
+	<br/>
+
+	<f:password name="Password" label="Password" value="" />
+	<br/>
+	<br/>
+
+	<f:password name="RetypePassword" label="Retype Password" value="" />
+	<br/>
+	<br/>
+
+        <f:text name="Address" label="Address" default="" />
+	<br/>
+	<br/>
+
+	<f:text name="ZipCode" label="Zip Code" default="" />
+	<br/>
+	<br/>
+
+	<f:submit label="Submit" handler="self.checkandsubmit" value="Register" />
+
+	<f:submit label="Check" handler="self.checkerrors" value="Check" />
+
+
+</f:form>
+
+</div>
